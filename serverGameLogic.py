@@ -2,52 +2,36 @@ import random
 from collections import deque
 
 
-#args p1 p2 p3 e p4 sºao as portas!!!
 
-def generateCards(p1,p2,p3,p4,clients):
-    #O = ouros
-    #C = copas
-    #E = espadas
-    #P = paus
-    # 2 3 4 5 6 7
-    # v = Valete Q = Dama K = King  A = Ace
-    cartas = ["2O", "3O", "4O", "5O", "6O", "7O", "VO", "QO", "KO", "AO", "2C", "3C", "4C", "5C", "6C", "7C", "VC", "QC", "KC", "AC", "2E", "3E", "4E", "5E", "6E", "7E", "VE", "QE", "KE", "AE", "2P", "3P", "4P", "5P", "6P", "7P", "VP", "QP", "KP", "AP"]
+
+def generateDominos(dominosF):
+    #lado esquerdo/superior do domino | lado direito/posterior do domino
+    dominos = ["0|O", "0|1", "0|2", "0|3", "0|4", "0|5", "0|6", "1|1", "1|2", "1|3", "1|4", "1|5", "1|6", "2|2", "2|3",
+              "2|4", "2|5", "2|6", "3|3", "3|4", "3|5", "3|6", "4|4", "4|5", "4|6", "5|5", "5|6", "6|6"]
     #p1 = player 1
     #p2 = player 2
     #p3 = player 3
     #p4 = player 4
     #Escolher 10 cartas diferentes para jogador
-    p1r=clients[p1]['address'][1]
-    p2r=clients[p2]['address'][1]
-    p3r=clients[p3]['address'][1]
-    items = deque(cartas)
-    items.rotate(p1r)
-    cartas = list(items)
-    p1 = random.sample(cartas, k=10)
-        #remover cartas da lista cartas
-    cartas = [x for x in cartas if (x not in p1)]
-    #Escolher 10 cartas diferentes para jogador
-    items = deque(cartas)
-    items.rotate(p2r)
-    cartas=list(items)
-    p2 = random.sample(cartas, k=10)
-        #remover cartas da lista cartas
-    cartas = [x for x in cartas if (x not in p2)]
-    #Escolher 10 cartas diferentes para jogador
-    items = deque(cartas)
-    items.rotate(p3r)
-    cartas=list(items)
-    p3 = random.sample(cartas, k=10)
-        #remover cartas da lista cartas
-    cartas = [x for x in cartas if (x not in p3)]
-    #Escolher 10 cartas diferentes para jogador
-    p4 = random.sample(cartas, k=10)
-        #remover cartas da lista cartas
-    cartas = [x for x in cartas if (x not in p4)]
+    dominosF = random.sample(dominos, len(dominos))
+    return dominosF
 
 
-    hands = [p1,p2,p3,p4]
-    return hands
+def firstPlayer(dominosF,players):
+    while True:
+        countPlayers = 0
+        for player in players:
+            player.hand.append(dominosF.pop(random.randint(0, len(dominosF) - 1)))
+            if (player.hand[0][0] == player.hand[0][2] and player.hand[0] > handF):
+                handF = player.hand
+                firstPlayer = player.client_socket
+            countPlayers += 1
+
+        if (countPlayers == 4):
+            if (handF) != "":
+                break
+
+    return firstPlayer
 
 
 def gameWinner(p1,p2,p3,p4):

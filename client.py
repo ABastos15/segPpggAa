@@ -51,9 +51,12 @@ while True:
         # Now we want to loop over received messages (there might be more than one) and print them
         while True:
 
+            receive_message(client_socket)
+
 
             # Receive our "header" containing username length, it's size is defined and constant
             username_header = client_socket.recv(HEADER_LENGTH)
+
             # If we received no data, server gracefully closed a connection, for example using socket.close() or socket.shutdown(socket.SHUT_RDWR)
             if not len(username_header):
                 print('Connection closed by the server')
@@ -67,7 +70,6 @@ while True:
 
             # Now do the same for message (as we received username, we received whole message, there's no need to check if it has any length)
             message=receive_message(client_socket)
-           
             if message == "NUMERO DE CLIENTES EXCEDIDO":
                 print(f'{username} > {message}')
                 sys.exit()
